@@ -4,6 +4,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
+const fs = require('fs')
 const PORT_NUMBER = 5566
 
 app.set('port', (process.env.PORT || PORT_NUMBER))
@@ -27,6 +28,10 @@ app.get('/webhook/', function(req, res){
 
 });
 
+app.get('/initkeywords', function(req, res){
+    initRestaurantTypes();
+});
+
 //receive message
 app.post('/webhook', function(req, res){
     var data = req.body;
@@ -43,7 +48,6 @@ app.post('/webhook', function(req, res){
                 }
             });
         });
-
         res.sendStatus(200);
     }
 });
@@ -113,6 +117,47 @@ function callSendAPI(messageData){
     }
 
     );
+}
+
+function initRestaurantTypes(){
+    var obj;
+    fs.readFile('restaurants_new_cat.json', 'utf8', function(err, data){
+        if(err) throw err;
+        obj = JSON.parse(data);
+        obj.forEach(function(val, index, arr){
+            var temp = {
+                value: val,
+                expressions: [val]
+            };
+            // pushToWit(temp);
+            arr[index] = temp;
+        });
+        // var t = {
+        //     value: obj[0],
+        //     expressions:[obj[0]]
+        // };
+        // console.log(t);
+        // pushToWit(t);
+        pushToWit(obj, 0, pushToWit);
+    });
+}
+
+function pushToWit(obj, j, callback){
+    if (j === obj.length)
+        return;
+    request({
+        uri: 'https://api.wit.ai/entities/restaurant_types/values',
+        method: 'POST',
+        headers: {
+            'Authorization' : ' Bearer JDUOAU3VTZCHJANCF4CN7RZZG2SDWKQ6',
+            'Content-Type': 'application/json'
+        },
+        json: obj[j]
+    }, function(err, response, body){
+        if(err) throw err;
+        console.log(body);
+        callback(obj, j + 1, pushToWit);
+    });
 }
 //sign up the server
 app.listen(app.get('port'), function(){
