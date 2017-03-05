@@ -1,7 +1,7 @@
 'use strict'
 
 const express = require('express')
-const bodyParser = require('body-parse')
+const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
 const PORT_NUMBER = 5566
@@ -17,7 +17,7 @@ app.get('/', function(req, res){
 });
 
 //for facebook verification
-app.get('/webhook', function(req, res){
+app.get('/webhook/', function(req, res){
     if(req.query['hub.verify_token'] === 'my_voice_is_my_password_verify_me'){
         res.send(req.query['hub.challenge'])
     }
