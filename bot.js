@@ -31,7 +31,7 @@ var findOrCreateSession = function (fbid) {
   return sessionId
 }
 
-var read = function (sender, message, reply) {
+var read = function (sender, message) {
 	if (message === 'hello') {
 		// Let's reply back hello
 		message = 'Hello yourself! I am a chat bot. You can say "show me pics of corgis"'
