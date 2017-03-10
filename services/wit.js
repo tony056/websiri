@@ -40,7 +40,7 @@ var actions = {
 		}
 		return Promise.resolve(newContext);
 	},
-	null(context, entities){
+	null(request){
 		return Promise.resolve();
 	},
 }
