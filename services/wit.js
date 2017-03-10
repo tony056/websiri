@@ -39,7 +39,10 @@ var actions = {
 			var newContext = context;
 		}
 		return Promise.resolve(newContext);
-	}
+	},
+	null(context, entities){
+		return Promise.resolve();
+	},
 }
 
 // SETUP THE WIT.AI SERVICE
