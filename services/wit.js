@@ -27,7 +27,7 @@ var actions = {
 		if(recipientId){
 			console.log('fuck you send function');
 		}
-	},
+	}
 	// say (sessionId, context, message, cb) {
 	// 	// Bot testing mode, run cb() and return
 	// 	if (require.main === module) {
