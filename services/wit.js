@@ -28,7 +28,7 @@ var actions = {
 			console.log('fuck you send function');
 		}
 	},
-	'null': ({sessionId, context, text, entities}) {
+	null ({sessionId, context, text, entities}) {
       return Promise.resolve();
 	},
 	// say (sessionId, context, message, cb) {
