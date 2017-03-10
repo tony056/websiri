@@ -3,6 +3,11 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
+
+const Config = require('./config')
+const FB = require('./connectors/facebook')
+var Bot = requires('./bot')
+
 const app = express()
 const fs = require('fs')
 const PORT_NUMBER = 5566
@@ -19,7 +24,7 @@ app.get('/', function(req, res){
 
 //for facebook verification
 app.get('/webhook/', function(req, res){
-    if(req.query['hub.verify_token'] === 'my_voice_is_my_password_verify_me'){
+    if(req.query['hub.verify_token'] === Config.FB_VERIFY_TOKEN){
         res.status(200).send(req.query['hub.challenge']);
     } else {
         console.log('Error, wrong token');
@@ -34,22 +39,33 @@ app.get('/initkeywords', function(req, res){
 
 //receive message
 app.post('/webhook', function(req, res){
-    var data = req.body;
-    if(data.object === 'page'){
-        data.entry.forEach(function(entry){
-            var pageID = entry.id;
-            var timeOfEvent = entry.time;
-
-            entry.messaging.forEach(function(event){
-                if(event.message){
-                    receivedMessage(event);
-                } else {
-                    console.log('unknown event');
-                }
+    // var data = req.body;
+    // if(data.object === 'page'){
+    //     data.entry.forEach(function(entry){
+    //         var pageID = entry.id;
+    //         var timeOfEvent = entry.time;
+    //
+    //         entry.messaging.forEach(function(event){
+    //             if(event.message){
+    //                 receivedMessage(event);
+    //             } else {
+    //                 console.log('unknown event');
+    //             }
+    //         });
+    //     });
+    //     res.sendStatus(200);
+    // }
+    var entry = FB.getMessageEntry(req.body);
+    if(entry && entry.message){
+        if(entry.message.attachments){
+            FB.newMessage(entry.sender.id, "That's interesting!");
+        } else {
+            Bot.read(entry.sender.id, entry.message.text, function(sender, reply){
+                FB.newMessage(sender, reply);
             });
-        });
-        res.sendStatus(200);
+        }
     }
+    res.sendStatus(200);
 });
 
 function receivedMessage(event){
