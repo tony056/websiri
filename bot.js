@@ -39,15 +39,21 @@ var read = function (sender, message, reply) {
 	} else {
 		// Let's find the user
 		var sessionId = findOrCreateSession(sender)
+        wit.runActions(sessionId, message, sessions[sessionId].context);
 		// Let's forward the message to the Wit.ai bot engine
 		// This will run all actions until there are no more actions left to do
-        wit.runActions(sessionId, message, sessions[sessionId].context)
-            .then(function(context) {
-                console.log('Waiting for next user messages');
-                sessions[sessionId].context = context;
-            }).catch(function(err)  {
-              console.error('Oops! Got an error from Wit: ', err.stack || err);
-          });
+        // wit.runActions(sessionId, message, sessions[sessionId].context)
+        //     .then(function(context) {
+        //         console.log('Waiting for next user messages');
+        //         sessions[sessionId].context = context;
+        //     }).catch(function(err)  {
+        //       console.error('Oops! Got an error from Wit: ', err.stack || err);
+        //   });
+        // wit.message(message, {})
+        //     .then(function(){
+        //
+        //     });
+
 		// wit.runActions(
 		// 	sessionId, // the user's current session by id
 		// 	message,  // the user's message
