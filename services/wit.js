@@ -25,7 +25,7 @@ var actions = {
 		return new Promise(function(resolve, reject){
 			console.log(request.body);
 			console.log(JSON.stringify(response));
-			FB.newMessage(request., response.text);
+			FB.newMessage(FB.findOrCreateSession(request.id), response.text);
 			return resolve();
 		});
 	},
