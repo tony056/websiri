@@ -28,9 +28,10 @@ var actions = {
 			console.log('fuck you send function');
 		}
 	},
-	null ({sessionId, context, text, entities}) {
-      return Promise.resolve();
-	},
+	// null ({sessionId, context, text, entities}) {
+	// 	console.log('fuck you send function');
+    //   return Promise.resolve();
+	// },
 	// say (sessionId, context, message, cb) {
 	// 	// Bot testing mode, run cb() and return
 	// 	if (require.main === module) {
