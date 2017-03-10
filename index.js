@@ -6,7 +6,7 @@ const request = require('request')
 
 const Config = require('./config')
 const FB = require('./connectors/facebook')
-var Bot = requires('./bot')
+var Bot = require('./bot')
 
 const app = express()
 const fs = require('fs')
