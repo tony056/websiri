@@ -23,8 +23,9 @@ var firstEntityValue = function (entities, entity) {
 var actions = {
 	send(request, response){
 		return new Promise(function(resolve, reject){
+			console.log(request.body);
 			console.log(JSON.stringify(response));
-			FB.newMessage(FB.findOrCreateSession(), response.text);
+			FB.newMessage(request., response.text);
 			return resolve();
 		});
 	},
