@@ -21,27 +21,34 @@ var firstEntityValue = function (entities, entity) {
 
 
 var actions = {
-	say (sessionId, context, message, cb) {
-		// Bot testing mode, run cb() and return
-		if (require.main === module) {
-			cb()
-			return
+
+	send ({sessionId}, {text}) {
+		const recipientId = sessions[sessionId].fbid;
+		if(recipientId){
+			console.log('fuck you send function');
 		}
-
-		console.log('WIT WANTS TO TALK TO:', context._fbid_)
-		console.log('WIT HAS SOMETHING TO SAY:', message)
-		console.log('WIT HAS A CONTEXT:', context)
-
-		if (checkURL(message)) {
-			FB.newMessage(context._fbid_, message, true)
-		} else {
-			FB.newMessage(context._fbid_, message)
-		}
-
-
-		cb()
-
 	},
+	// say (sessionId, context, message, cb) {
+	// 	// Bot testing mode, run cb() and return
+	// 	if (require.main === module) {
+	// 		cb()
+	// 		return
+	// 	}
+	//
+	// 	console.log('WIT WANTS TO TALK TO:', context._fbid_)
+	// 	console.log('WIT HAS SOMETHING TO SAY:', message)
+	// 	console.log('WIT HAS A CONTEXT:', context)
+	//
+	// 	if (checkURL(message)) {
+	// 		FB.newMessage(context._fbid_, message, true)
+	// 	} else {
+	// 		FB.newMessage(context._fbid_, message)
+	// 	}
+	//
+	//
+	// 	cb()
+	//
+	// },
 
 	merge(sessionId, context, entities, message, cb) {
 		// Reset the weather story
