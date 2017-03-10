@@ -60,9 +60,7 @@ app.post('/webhook', function(req, res){
         if(entry.message.attachments){
             FB.newMessage(entry.sender.id, "That's interesting!");
         } else {
-            Bot.read(entry.sender.id, entry.message.text, function(sender, reply){
-                FB.newMessage(sender, reply);
-            });
+            Bot.read(entry.sender.id, entry.message.text);
         }
     }
     res.sendStatus(200);
