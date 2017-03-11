@@ -26,7 +26,7 @@ var actions = {
 		console.log('sending.....');
 		const {sessionId, context, entities} = request;
 		const {text, quickreplies} = response;
-		const recipientId = Bot.sessions[sessionId].fbid;
+		const recipientId = context._fbid_;
 		console.log('assigned.........');
 		return new Promise(function(resolve, reject){
 			// console.log(request.body);
