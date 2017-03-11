@@ -71,4 +71,5 @@ var firstEntityValue = function (entities, entity) {
 module.exports = {
 	findOrCreateSession: findOrCreateSession,
 	read: read,
+    sessions: sessions,
 }

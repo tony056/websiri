@@ -24,7 +24,7 @@ var actions = {
 	send(request, response){
 		const {sessionId, context, entities} = request;
 		const {text, quickreplies} = response;
-		const recipientId = sessions[sessionId].fbid;
+		const recipientId = FB.sessions[sessionId].fbid;
 		return new Promise(function(resolve, reject){
 			// console.log(request.body);
 			console.log(text);
