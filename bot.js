@@ -34,6 +34,7 @@ var findOrCreateSession = function (fbid) {
 var read = function (sender, message) {
 	if (message === 'hello') {
 		// Let's reply back hello
+        var sessionId = findOrCreateSession(sender)
 		message = 'Hello yourself! I am a chat bot. You can say "show me pics of corgis"'
 		// wit.send(sender, message);
         wit.runActions(sessionId, message, sessions[sessionId].context);
