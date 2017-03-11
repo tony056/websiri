@@ -6,7 +6,7 @@ var Wit = require('node-wit').Wit
 var request = require('request')
 var log = require('node-wit').log
 var Bot = require('../bot')
-
+var FireBase = require('./firebase')
 
 var firstEntityValue = function (entities, entity) {
 	var val = entities && entities[entity] &&
@@ -39,14 +39,27 @@ var actions = {
 	},
 	getRestaurants({context, entities}){
 		return new Promise(function(resolve, reject){
+			console.log('entities: ' + JSON.stringify(entities));
 			var location = firstEntityValue(entities, "location");
 			if(location){
-				context.restaurants = 'Chipolite in ' + location;
-				delete context.missingLocation;
+				// context.restaurants = 'Chipolite in ' + location;
+				//go to query restaurants at this location
+				FireBase.queryRestaurantsAtLocation(location, function(error, data){
+					context.restaurants = data;
+					delete context.missingLocation;
+				});
+
 			}else{
 				context.missingLocation = true;
 				delete context.restaurants;
 			}
+			return resolve(context);
+		});
+	},
+	getTargetRestaurant({context, entities}){
+		return new Promise(function(resolve, reject){
+			console.log('entities: ' + JSON.stringify(entities));
+			//query db to get data
 			return resolve(context);
 		});
 	},

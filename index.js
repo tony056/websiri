@@ -10,6 +10,7 @@ var Bot = require('./bot')
 
 const app = express()
 const fs = require('fs')
+const FireBase = require('./services/firebase')
 const PORT_NUMBER = 5566
 
 app.set('port', (process.env.PORT || PORT_NUMBER))
@@ -31,6 +32,13 @@ app.get('/webhook/', function(req, res){
         res.sendStatus(403);
     }
 
+});
+
+app.get('/query', function(req, res){
+    FireBase.initFirebase()
+    FireBase.queryRestaurantsAtLocation('Brooklyn', function(err, data){
+        console.log('index: ' + data);
+    })
 });
 
 app.get('/initkeywords', function(req, res){
@@ -137,6 +145,7 @@ function initRestaurantTypes(){
     var obj;
     fs.readFile('restaurants_new_cat.json', 'utf8', function(err, data){
         if(err) throw err;
+
         obj = JSON.parse(data);
         obj.forEach(function(val, index, arr){
             var temp = {
