@@ -5,6 +5,7 @@ var FB = require('../connectors/facebook')
 var Wit = require('node-wit').Wit
 var request = require('request')
 var log = require('node-wit').log
+var Bot = require('../bot')
 
 
 var firstEntityValue = function (entities, entity) {
@@ -22,9 +23,11 @@ var firstEntityValue = function (entities, entity) {
 
 var actions = {
 	send(request, response){
+		console.log('sending.....');
 		const {sessionId, context, entities} = request;
 		const {text, quickreplies} = response;
-		const recipientId = FB.sessions[sessionId].fbid;
+		const recipientId = Bot.sessions[sessionId].fbid;
+		console.log('assigned.........');
 		return new Promise(function(resolve, reject){
 			// console.log(request.body);
 			console.log(text);
