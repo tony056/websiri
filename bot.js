@@ -37,11 +37,16 @@ var read = function (sender, message) {
         var sessionId = findOrCreateSession(sender)
 		message = 'Hello yourself! I am a chat bot. You can say "show me pics of corgis"'
 		// wit.send(sender, message);
-        wit.runActions(sessionId, message, sessions[sessionId].context);
+        // wit.runActions(sessionId, message, sessions[sessionId].context);
+        console.log(message);
 	} else {
 		// Let's find the user
 		var sessionId = findOrCreateSession(sender)
-        wit.runActions(sessionId, message, sessions[sessionId].context);
+        wit.message(message, {})
+            .then(function(data){
+                console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
+            }).catch(console.error());
+        // wit.runActions(sessionId, message, sessions[sessionId].context);
 		// Let's forward the message to the Wit.ai bot engine
 		// This will run all actions until there are no more actions left to do
         // wit.runActions(sessionId, message, sessions[sessionId].context)
