@@ -22,24 +22,29 @@ var firstEntityValue = function (entities, entity) {
 
 var actions = {
 	send(request, response){
+		const {sessionId, context, entities} = request;
+		const {text, quickreplies} = response;
 		return new Promise(function(resolve, reject){
-			console.log(request.body);
+			// console.log(request.body);
+			console.log(text);
 			console.log(JSON.stringify(response));
-			FB.newMessage(FB.findOrCreateSession(request.id), response.text);
+
+			FB.newMessage(sessionId, text);
 			return resolve();
 		});
 	},
-	findResaurantType({context, entities}){
-		const restaurantType = firstEntityValue(entities, 'restaurant_types')
-		if(restaurantType){
-			//search for possible restaurants
-			context.resType = restaurantType;
-			var newContext = {};
-
-		}else {
-			var newContext = context;
-		}
-		return Promise.resolve(newContext);
+	getRestaurants({context, entities}){
+		return new Promise(function(resolve, reject){
+			var location = firstEntityValue(entities, "location");
+			if(location){
+				context.restaurants = 'Chipolite in ' + location;
+				delete context.missingLocation;
+			}else{
+				context.missingLocation = true;
+				delete context.restaurants;
+			}
+			return resolve(context);
+		});
 	},
 	null(request){
 		return Promise.resolve();

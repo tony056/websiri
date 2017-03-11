@@ -42,51 +42,31 @@ var read = function (sender, message) {
 	} else {
 		// Let's find the user
 		var sessionId = findOrCreateSession(sender)
-        wit.message(message, {})
-            .then(function(data){
-                console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
-            }).catch(console.error());
-        // wit.runActions(sessionId, message, sessions[sessionId].context);
-		// Let's forward the message to the Wit.ai bot engine
-		// This will run all actions until there are no more actions left to do
-        // wit.runActions(sessionId, message, sessions[sessionId].context)
-        //     .then(function(context) {
-        //         console.log('Waiting for next user messages');
-        //         sessions[sessionId].context = context;
-        //     }).catch(function(err)  {
-        //       console.error('Oops! Got an error from Wit: ', err.stack || err);
-        //   });
         // wit.message(message, {})
-        //     .then(function(){
+        //     .then(function(data){
+        //         var restaurantType = firstEntityValue(data.entities, 'restaurant_types') || null;
+        //         if(restaurantType){
+        //             //provide possible restaurants
+        //         }
+        //         var restaurantName = firstEntityValue(data.entities, 'restaurants_names') || null;
         //
-        //     });
-
-		// wit.runActions(
-		// 	sessionId, // the user's current session by id
-		// 	message,  // the user's message
-		// 	sessions[sessionId].context, // the user's session state
-		// 	function (error, context) { // callback
-		// 	if (error) {
-		// 		console.log('oops!', error)
-		// 	} else {
-		// 		// Wit.ai ran all the actions
-		// 		// Now it needs more messages
-		// 		console.log('Waiting for further messages')
-        //
-		// 		// Based on the session state, you might want to reset the session
-		// 		// Example:
-		// 		// if (context['done']) {
-		// 		// 	delete sessions[sessionId]
-		// 		// }
-        //
-		// 		// Updating the user's current session state
-		// 		sessions[sessionId].context = context
-		// 	}
-		// })
+        //         // console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
+        //     }).catch(console.error());
+        wit.runActions(sessionId, message, sessions[sessionId].context);
 	}
 }
 
+var firstEntityValue = function (entities, entity) {
+	var val = entities && entities[entity] &&
+		Array.isArray(entities[entity]) &&
+		entities[entity].length > 0 &&
+		entities[entity][0].value
 
+	if (!val) {
+		return null
+	}
+	return typeof val === 'object' ? val.value : val
+}
 
 module.exports = {
 	findOrCreateSession: findOrCreateSession,
